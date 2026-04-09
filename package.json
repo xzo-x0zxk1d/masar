@@ -1,10 +1,9 @@
 {
   "name": "masar",
-  "version": "1.0.0",
-  "description": "منصة مَسَار - أفضل مشروع مدرسي",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "منصة مَسَار - المشروع الفائز",
   "scripts": {
-    "start": "vercel dev"
+    "dev": "vercel dev"
   },
   "dependencies": {
     "node-fetch": "^2.6.7"
