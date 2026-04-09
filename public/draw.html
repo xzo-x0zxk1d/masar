@@ -3,151 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>استوديو الرسم - مَسَار</title>
+    <title>الرسم - مَسَار</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .canvas-container { background: var(--glass); backdrop-filter: blur(8px); border-radius: 30px; padding: 15px; border: 2px solid var(--lime); }
-        canvas { 
-            background: #142614; 
-            border-radius: 20px; 
-            width: 100%; 
-            height: auto; 
-            border: 2px solid var(--lime); 
-            cursor: crosshair; 
-            touch-action: none;  /* يمنع السحب/التمرير على الجوال */
-            display: block;
-        }
-        video { border-radius: 20px; border: 3px solid var(--lime); max-width: 100%; display: none; margin-bottom: 15px; }
-        .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; align-items: center; }
-        @media (max-width: 600px) {
-            .controls .btn { padding: 8px 12px; font-size: 0.9rem; }
-        }
+        canvas{background:#142614;border-radius:20px;width:100%;height:auto;border:2px solid var(--lime);touch-action:none;}
+        video{border-radius:20px;border:3px solid var(--lime);max-width:100%;display:none;}
+        .controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:15px;}
     </style>
 </head>
 <body>
-<div class="privacy-banner" id="privacyBanner">
-    <span>🔒 تنبيه الخصوصية</span> — نحتفظ بعنوان IP مرة واحدة. بالمتابعة أنت موافق.
-    <button id="acceptPrivacy">موافق</button>
-</div>
-<nav class="navbar">
-    <div class="nav-container">
-        <div class="logo">
-            <img src="school.png" alt="شعار المدرسة" class="school-logo">
-            <span>مَسَار</span>
-            <small>فيصل</small>
-        </div>
+    <div class="privacy-banner" id="privacyBanner"><span><i class="fas fa-shield-alt"></i> تنبيه الخصوصية</span> — نحتفظ بعنوان IP مرة واحدة. <button id="acceptPrivacy"><i class="fas fa-check"></i> موافق</button></div>
+    <nav class="navbar"><div class="nav-container">
+        <div class="logo"><img src="school.png" class="school-logo"><span>مَسَار</span><small>فيصل</small></div>
         <ul class="nav-menu">
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="books.html">الكتب</a></li>
-            <li><a href="audiobooks.html">المسموع</a></li>
-            <li><a href="games.html">الألعاب</a></li>
-            <li><a href="draw.html" class="active">الرسم</a></li>
-            <li><a href="map.html">الخريطة</a></li>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="books.html"><i class="fas fa-book"></i> الكتب</a></li>
+            <li><a href="audiobooks.html"><i class="fas fa-headphones"></i> المسموع</a></li>
+            <li><a href="games.html"><i class="fas fa-gamepad"></i> الألعاب</a></li>
+            <li><a href="draw.html" class="active"><i class="fas fa-paint-brush"></i> الرسم</a></li>
+            <li><a href="map.html"><i class="fas fa-map"></i> الخريطة</a></li>
         </ul>
         <div class="toolbar">
-            <button id="toggleMode" title="تبديل السمة">🌙</button>
-            <button id="increaseFont" title="تكبير الخط">أكبر</button>
-            <button id="decreaseFont" title="تصغير الخط">أصغر</button>
+            <button id="toggleMode"><i class="fas fa-moon"></i></button>
+            <button id="increaseFont">A+</button>
+            <button id="decreaseFont">A-</button>
         </div>
-    </div>
-</nav>
+    </div></nav>
 
-<section style="padding: 15px 0;">
-    <h2 style="font-size:2.2rem; margin-bottom:15px;">✏️ استوديو الرسم</h2>
-    <div class="canvas-container">
-        <div class="controls">
-            <button class="btn" id="startCamera">📸 كاميرا</button>
-            <button class="btn btn-outline" id="clearCanvas">🧽 مسح</button>
-            <input type="color" id="colorPicker" value="#a3e635" style="width:50px; height:50px; border-radius:20px;">
-            <input type="range" id="brushSize" min="2" max="40" value="8" style="width:140px;">
+    <section>
+        <h2><i class="fas fa-paint-brush"></i> استوديو الرسم</h2>
+        <div class="card">
+            <div class="controls">
+                <button class="btn" id="startCamera"><i class="fas fa-camera"></i> كاميرا</button>
+                <button class="btn btn-outline" id="clearCanvas"><i class="fas fa-eraser"></i> مسح</button>
+                <input type="color" id="colorPicker" value="#a3e635" style="width:50px;height:50px;">
+                <input type="range" id="brushSize" min="2" max="40" value="8">
+            </div>
+            <video id="video" autoplay playsinline></video>
+            <canvas id="canvas" width="800" height="500"></canvas>
+            <p><i class="fas fa-hand-pointer"></i> اسحب بإصبعك للرسم · الكاميرا ترسم تلقائياً</p>
         </div>
-        <video id="video" autoplay playsinline></video>
-        <canvas id="canvas" width="800" height="500"></canvas>
-        <p style="margin-top:12px; font-size:0.95rem;">🖐️ اسحب بإصبعك للرسم · الكاميرا ترسم تلقائياً (جرّب)</p>
-    </div>
-</section>
+    </section>
 
-<footer class="footer">
-    <p>🌿 مَسَار · إبداع <strong>فيصل</strong></p>
-</footer>
-
-<script src="js/main.js"></script>
-<script>
-    (function(){
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
-        let color = '#a3e635';
-        let size = 8;
-
-        function resizeCanvas() {
-            const container = canvas.parentElement;
-            const containerWidth = container.clientWidth;
-            canvas.style.width = containerWidth + 'px';
-            canvas.style.height = (containerWidth * 0.625) + 'px'; // نسبة 800:500
+    <footer class="footer"><p><i class="fas fa-leaf"></i> مَسَار · إبداع <strong>فيصل</strong></p></footer>
+    <script src="js/main.js"></script>
+    <script>
+        const canvas=document.getElementById('canvas'), ctx=canvas.getContext('2d');
+        let drawing=false, color='#a3e635', size=8, motionEnabled=false;
+        function resizeCanvas(){ const w=canvas.parentElement.clientWidth; canvas.style.width=w+'px'; canvas.style.height=(w*0.625)+'px'; }
+        window.addEventListener('resize',resizeCanvas); resizeCanvas();
+        document.getElementById('colorPicker').onchange=e=>color=e.target.value;
+        document.getElementById('brushSize').oninput=e=>size=e.target.value;
+        function getCoords(e){
+            const rect=canvas.getBoundingClientRect();
+            const scaleX=canvas.width/rect.width, scaleY=canvas.height/rect.height;
+            let cx,cy;
+            if(e.touches){ cx=e.touches[0].clientX; cy=e.touches[0].clientY; }
+            else { cx=e.clientX; cy=e.clientY; }
+            return {x:(cx-rect.left)*scaleX, y:(cy-rect.top)*scaleY};
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        document.getElementById('colorPicker').onchange = e => color = e.target.value;
-        document.getElementById('brushSize').oninput = e => size = e.target.value;
-
-        function getCoordinates(e) {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            let clientX, clientY;
-            if (e.touches) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
+        function startDraw(e){ e.preventDefault(); drawing=true; const {x,y}=getCoords(e); ctx.beginPath(); ctx.fillStyle=color; ctx.arc(x,y,size,0,2*Math.PI); ctx.fill(); }
+        function draw(e){ e.preventDefault(); if(!drawing) return; const {x,y}=getCoords(e); ctx.fillStyle=color; ctx.beginPath(); ctx.arc(x,y,size,0,2*Math.PI); ctx.fill(); }
+        function stopDraw(e){ e?.preventDefault(); drawing=false; }
+        canvas.addEventListener('touchstart',startDraw,{passive:false});
+        canvas.addEventListener('touchmove',draw,{passive:false});
+        canvas.addEventListener('touchend',stopDraw);
+        canvas.addEventListener('mousedown',startDraw);
+        canvas.addEventListener('mousemove',draw);
+        canvas.addEventListener('mouseup',stopDraw);
+        canvas.addEventListener('mouseleave',stopDraw);
+        document.getElementById('clearCanvas').onclick=()=>ctx.clearRect(0,0,canvas.width,canvas.height);
+        document.getElementById('startCamera').onclick=async()=>{
+            const video=document.getElementById('video');
+            video.style.display='block';
+            const stream=await navigator.mediaDevices.getUserMedia({video:true});
+            video.srcObject=stream;
+            video.play();
+            const tempCanvas=document.createElement('canvas'), tempCtx=tempCanvas.getContext('2d');
+            let lastFrame=null;
+            function detectMotion(){
+                if(video.readyState===video.HAVE_ENOUGH_DATA){
+                    tempCanvas.width=video.videoWidth; tempCanvas.height=video.videoHeight;
+                    tempCtx.drawImage(video,0,0);
+                    const current=tempCtx.getImageData(0,0,tempCanvas.width,tempCanvas.height);
+                    if(lastFrame){
+                        for(let y=0; y<tempCanvas.height; y+=6){
+                            for(let x=0; x<tempCanvas.width; x+=6){
+                                const i=(y*tempCanvas.width+x)*4;
+                                if(Math.abs(current.data[i]-lastFrame.data[i])>30){
+                                    const rx=(x/tempCanvas.width)*canvas.width;
+                                    const ry=(y/tempCanvas.height)*canvas.height;
+                                    ctx.fillStyle=color; ctx.beginPath(); ctx.arc(rx,ry,size,0,2*Math.PI); ctx.fill();
+                                }
+                            }
+                        }
+                    }
+                    lastFrame=current;
+                }
+                requestAnimationFrame(detectMotion);
             }
-            const x = (clientX - rect.left) * scaleX;
-            const y = (clientY - rect.top) * scaleY;
-            return { x, y };
-        }
-
-        function startDraw(e) {
-            e.preventDefault();
-            drawing = true;
-            const { x, y } = getCoordinates(e);
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.arc(x, y, size, 0, 2*Math.PI);
-            ctx.fill();
-        }
-        function draw(e) {
-            e.preventDefault();
-            if (!drawing) return;
-            const { x, y } = getCoordinates(e);
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(x, y, size, 0, 2*Math.PI);
-            ctx.fill();
-        }
-        function stopDraw(e) { e?.preventDefault(); drawing = false; ctx.beginPath(); }
-
-        canvas.addEventListener('touchstart', startDraw, { passive: false });
-        canvas.addEventListener('touchmove', draw, { passive: false });
-        canvas.addEventListener('touchend', stopDraw);
-        canvas.addEventListener('touchcancel', stopDraw);
-        canvas.addEventListener('mousedown', startDraw);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDraw);
-        canvas.addEventListener('mouseleave', stopDraw);
-
-        document.getElementById('clearCanvas').onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        document.getElementById('startCamera').onclick = async () => {
-            const video = document.getElementById('video');
-            video.style.display = 'block';
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-            // رسم بسيط من الكاميرا (اختياري)
+            detectMotion();
         };
-    })();
-</script>
+    </script>
 </body>
 </html>
