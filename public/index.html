@@ -2,14 +2,15 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مَسَار - الرئيسية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="privacy-banner" id="privacyBanner">
-        <span>🔒 تنبيه الخصوصية</span> — نحتفظ بعنوان IP مرة واحدة فقط. بالمتابعة أنت موافق.
-        <button id="acceptPrivacy">موافق</button>
+        <span><i class="fas fa-shield-alt"></i> تنبيه الخصوصية</span> — نحتفظ بعنوان IP مرة واحدة. بالمتابعة أنت موافق.
+        <button id="acceptPrivacy"><i class="fas fa-check"></i> موافق</button>
     </div>
     <nav class="navbar">
         <div class="nav-container">
@@ -19,17 +20,22 @@
                 <small>فيصل</small>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="active">الرئيسية</a></li>
-                <li><a href="books.html">الكتب</a></li>
-                <li><a href="audiobooks.html">المسموع</a></li>
-                <li><a href="games.html">الألعاب</a></li>
-                <li><a href="draw.html">الرسم</a></li>
-                <li><a href="map.html">الخريطة</a></li>
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="books.html"><i class="fas fa-book"></i> الكتب</a></li>
+                <li><a href="audiobooks.html"><i class="fas fa-headphones"></i> المسموع</a></li>
+                <li><a href="games.html"><i class="fas fa-gamepad"></i> الألعاب</a></li>
+                <li><a href="draw.html"><i class="fas fa-paint-brush"></i> الرسم</a></li>
+                <li><a href="map.html"><i class="fas fa-map"></i> الخريطة</a></li>
             </ul>
-            <div class="toolbar">
-                <button id="toggleMode" title="تبديل السمة">🌙</button>
-                <button id="increaseFont" title="تكبير الخط">أكبر</button>
-                <button id="decreaseFont" title="تصغير الخط">أصغر</button>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div class="visitor-badge" id="visitorBadge">
+                    <i class="fas fa-eye"></i> <span id="visitorCount">---</span>
+                </div>
+                <div class="toolbar">
+                    <button id="toggleMode"><i class="fas fa-moon"></i></button>
+                    <button id="increaseFont">A+</button>
+                    <button id="decreaseFont">A-</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -37,59 +43,35 @@
     <section class="hero">
         <h1>مَسَار</h1>
         <p>منصتك المتكاملة للمعرفة والإبداع والترفيه</p>
-        <p>صممها <strong>فيصل</strong> 🌟</p>
+        <p>صممها <strong>فيصل</strong> <i class="fas fa-star" style="color:var(--lime);"></i></p>
         <div class="hero-buttons">
-            <a href="books.html" class="btn btn-primary">📚 استكشف المكتبة</a>
-            <a href="audiobooks.html" class="btn btn-outline">🎧 كتب مسموعة</a>
-            <a href="games.html" class="btn btn-outline">🎮 الألعاب</a>
-            <a href="draw.html" class="btn btn-outline">🎨 استوديو الرسم</a>
+            <a href="books.html" class="btn btn-primary"><i class="fas fa-book-open"></i> استكشف المكتبة</a>
+            <a href="audiobooks.html" class="btn btn-outline"><i class="fas fa-headphones"></i> كتب مسموعة</a>
+            <a href="games.html" class="btn btn-outline"><i class="fas fa-dice"></i> الألعاب</a>
+            <a href="draw.html" class="btn btn-outline"><i class="fas fa-palette"></i> استوديو الرسم</a>
         </div>
     </section>
 
     <section class="features">
-        <h2>ماذا تقدم مَسَار؟</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <span class="feature-icon">📖</span>
-                <h3>مكتبة رقمية</h3>
-                <p>آلاف الكتب من Google Books</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎧</span>
-                <h3>كتب مسموعة</h3>
-                <p>استمع إلى روائع الأدب العالمي</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎲</span>
-                <h3>ألعاب تعليمية</h3>
-                <p>ألغاز وتحديات ممتعة</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎨</span>
-                <h3>استوديو رسم</h3>
-                <p>ارسم بحرية مع الكاميرا</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🗺️</span>
-                <h3>خريطة تفاعلية</h3>
-                <p>أماكن مميزة حولك</p>
-            </div>
+        <h2><i class="fas fa-gem"></i> ماذا تقدم مَسَار؟</h2>
+        <div class="grid">
+            <div class="card"><i class="fas fa-book fa-3x" style="color:var(--lime);"></i><h3>مكتبة رقمية</h3><p>آلاف الكتب من Google Books</p></div>
+            <div class="card"><i class="fas fa-headphones fa-3x" style="color:var(--lime);"></i><h3>كتب مسموعة</h3><p>استمع إلى روائع الأدب</p></div>
+            <div class="card"><i class="fas fa-puzzle-piece fa-3x" style="color:var(--lime);"></i><h3>ألعاب تعليمية</h3><p>20 لعبة ممتعة</p></div>
+            <div class="card"><i class="fas fa-paint-brush fa-3x" style="color:var(--lime);"></i><h3>استوديو رسم</h3><p>ارسم بحرية مع الكاميرا</p></div>
+            <div class="card"><i class="fas fa-map-marked-alt fa-3x" style="color:var(--lime);"></i><h3>خريطة تفاعلية</h3><p>أماكن مميزة حولك</p></div>
         </div>
     </section>
 
     <footer class="footer">
-        <p>🌿 مَسَار · إبداع <strong>فيصل</strong> · المدرسة: أضواء الرياض</p>
-        <p>عدد الزيارات الفريد: <span id="visitorCount">---</span></p>
+        <p><i class="fas fa-leaf"></i> مَسَار · إبداع <strong>فيصل</strong> · مدارس أضواء الرياض</p>
     </footer>
 
     <script src="js/main.js"></script>
     <script>
-        // تسجيل الزيارة الفريدة عبر API
-        fetch('/api/ip')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('visitorCount').textContent = data.count;
-            });
+        fetch('/api/ip').then(r=>r.json()).then(d=>{
+            document.getElementById('visitorCount').textContent = d.count;
+        });
     </script>
 </body>
 </html>
