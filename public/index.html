@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>مَسَار - الرئيسية</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="privacy-banner" id="privacyBanner">
+        <span>🔒 تنبيه الخصوصية</span> — نحتفظ بعنوان IP مرة واحدة فقط. بالمتابعة أنت موافق.
+        <button id="acceptPrivacy">موافق</button>
+    </div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="school.png" alt="شعار المدرسة" class="school-logo">
+                <span>مَسَار</span>
+                <small>فيصل</small>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">الرئيسية</a></li>
+                <li><a href="books.html">الكتب</a></li>
+                <li><a href="audiobooks.html">المسموع</a></li>
+                <li><a href="games.html">الألعاب</a></li>
+                <li><a href="draw.html">الرسم</a></li>
+                <li><a href="map.html">الخريطة</a></li>
+            </ul>
+            <div class="toolbar">
+                <button id="toggleMode" title="تبديل السمة">🌙</button>
+                <button id="increaseFont" title="تكبير الخط">أكبر</button>
+                <button id="decreaseFont" title="تصغير الخط">أصغر</button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>مَسَار</h1>
+        <p>منصتك المتكاملة للمعرفة والإبداع والترفيه</p>
+        <p>صممها <strong>فيصل</strong> 🌟</p>
+        <div class="hero-buttons">
+            <a href="books.html" class="btn btn-primary">📚 استكشف المكتبة</a>
+            <a href="audiobooks.html" class="btn btn-outline">🎧 كتب مسموعة</a>
+            <a href="games.html" class="btn btn-outline">🎮 الألعاب</a>
+            <a href="draw.html" class="btn btn-outline">🎨 استوديو الرسم</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>ماذا تقدم مَسَار؟</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">📖</span>
+                <h3>مكتبة رقمية</h3>
+                <p>آلاف الكتب من Google Books</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎧</span>
+                <h3>كتب مسموعة</h3>
+                <p>استمع إلى روائع الأدب العالمي</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎲</span>
+                <h3>ألعاب تعليمية</h3>
+                <p>ألغاز وتحديات ممتعة</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎨</span>
+                <h3>استوديو رسم</h3>
+                <p>ارسم بحرية مع الكاميرا</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🗺️</span>
+                <h3>خريطة تفاعلية</h3>
+                <p>أماكن مميزة حولك</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>🌿 مَسَار · إبداع <strong>فيصل</strong> · المدرسة: أضواء الرياض</p>
+        <p>عدد الزيارات الفريد: <span id="visitorCount">---</span></p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // تسجيل الزيارة الفريدة عبر API
+        fetch('/api/ip')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('visitorCount').textContent = data.count;
+            });
+    </script>
+</body>
+</html>
