@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>خريطة مَسَار</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <style>
+        #map { height: 400px; border-radius: 30px; border: 3px solid var(--lime); }
+        .place-card { background: var(--glass); padding: 15px; border-radius: 20px; border: 2px solid var(--lime); margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="privacy-banner" id="privacyBanner">
+        <span>🔒 تنبيه الخصوصية</span> — نحتفظ بعنوان IP مرة واحدة فقط. بالمتابعة أنت موافق.
+        <button id="acceptPrivacy">موافق</button>
+    </div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="school.png" alt="شعار المدرسة" class="school-logo">
+                <span>مَسَار</span>
+                <small>فيصل</small>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="books.html">الكتب</a></li>
+                <li><a href="audiobooks.html">المسموع</a></li>
+                <li><a href="games.html">الألعاب</a></li>
+                <li><a href="draw.html">الرسم</a></li>
+                <li><a href="map.html" class="active">الخريطة</a></li>
+            </ul>
+            <div class="toolbar">
+                <button id="toggleMode" title="تبديل السمة">🌙</button>
+                <button id="increaseFont" title="تكبير الخط">أكبر</button>
+                <button id="decreaseFont" title="تصغير الخط">أصغر</button>
+            </div>
+        </div>
+    </nav>
+
+    <section style="padding: 20px 0;">
+        <h2 style="font-size:2.2rem; margin-bottom:20px;">🗺️ خريطة الأماكن</h2>
+        <input type="text" id="searchPlace" class="search-box" placeholder="ابحث عن مكان...">
+        <div id="map"></div>
+        <div id="placesList"></div>
+    </section>
+
+    <footer class="footer">
+        <p>🌿 مَسَار · إبداع <strong>فيصل</strong></p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        const places = [
+            { name: 'حديقة الملك سلمان', type: 'منتزه', location: 'الرياض', lat: 24.750, lng: 46.700 },
+            { name: 'واجهة جدة البحرية', type: 'ترفيه', location: 'جدة', lat: 21.550, lng: 39.170 },
+            { name: 'جبل عكمة', type: 'طبيعة', location: 'العلا', lat: 26.620, lng: 37.920 },
+            { name: 'مكتبة إثراء', type: 'ثقافة', location: 'الظهران', lat: 26.320, lng: 50.130 }
+        ];
+
+        const map = L.map('map').setView([24.7, 46.0], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        function renderPlaces(list) {
+            const container = document.getElementById('placesList');
+            container.innerHTML = list.map(p => `
+                <div class="place-card">
+                    <h3>📍 ${p.name}</h3>
+                    <p>${p.type} · ${p.location}</p>
+                </div>
+            `).join('');
+        }
+
+        places.forEach(p => {
+            L.marker([p.lat, p.lng]).addTo(map).bindPopup(`<b>${p.name}</b><br>${p.type} · ${p.location}`);
+        });
+        renderPlaces(places);
+
+        document.getElementById('searchPlace').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            const filtered = places.filter(p => p.name.toLowerCase().includes(val) || p.location.toLowerCase().includes(val));
+            renderPlaces(filtered);
+        });
+    </script>
+</body>
+</html>
