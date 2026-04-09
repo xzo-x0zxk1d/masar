@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>مكتبة مَسَار المسموعة</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .audiobooks-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .audio-card {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid var(--lime);
+        }
+        .audio-player { width: 100%; margin-top: 15px; border-radius: 30px; }
+        @media (min-width: 600px) { .audiobooks-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (min-width: 900px) { .audiobooks-grid { grid-template-columns: repeat(3,1fr); } }
+    </style>
+</head>
+<body>
+    <div class="privacy-banner" id="privacyBanner">
+        <span>🔒 تنبيه الخصوصية</span> — نحتفظ بعنوان IP مرة واحدة فقط. بالمتابعة أنت موافق.
+        <button id="acceptPrivacy">موافق</button>
+    </div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="school.png" alt="شعار المدرسة" class="school-logo">
+                <span>مَسَار</span>
+                <small>فيصل</small>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="books.html">الكتب</a></li>
+                <li><a href="audiobooks.html" class="active">المسموع</a></li>
+                <li><a href="games.html">الألعاب</a></li>
+                <li><a href="draw.html">الرسم</a></li>
+                <li><a href="map.html">الخريطة</a></li>
+            </ul>
+            <div class="toolbar">
+                <button id="toggleMode" title="تبديل السمة">🌙</button>
+                <button id="increaseFont" title="تكبير الخط">أكبر</button>
+                <button id="decreaseFont" title="تصغير الخط">أصغر</button>
+            </div>
+        </div>
+    </nav>
+
+    <section style="padding: 20px 0;">
+        <h2 style="font-size:2.2rem; margin-bottom:20px;">🎧 الكتب المسموعة</h2>
+        <input type="text" id="audioSearch" class="search-box" placeholder="ابحث عن كتاب مسموع... (مثال: مغامرات)">
+        <div id="audioContainer" class="audiobooks-grid"></div>
+        <div id="loadingAudio" style="text-align:center; padding:30px; display:none;">⏳ جاري التحميل...</div>
+    </section>
+
+    <footer class="footer">
+        <p>🌿 مَسَار · إبداع <strong>فيصل</strong></p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        async function searchAudiobooks(query) {
+            if (!query) return;
+            document.getElementById('loadingAudio').style.display = 'block';
+            document.getElementById('audioContainer').innerHTML = '';
+            const res = await fetch(`/api/audiobooks?q=${encodeURIComponent(query)}`);
+            const data = await res.json();
+            document.getElementById('loadingAudio').style.display = 'none';
+            if (!data.books || data.books.length === 0) {
+                document.getElementById('audioContainer').innerHTML = '<p>😕 لا توجد كتب مسموعة</p>';
+                return;
+            }
+            renderAudiobooks(data.books);
+        }
+
+        function renderAudiobooks(books) {
+            const html = books.map(book => `
+                <div class="audio-card">
+                    <span style="font-size:3rem;">🎧</span>
+                    <h3>${book.title || 'كتاب مسموع'}</h3>
+                    <p>${book.author || 'مؤلف غير معروف'}</p>
+                    <audio controls class="audio-player" src="${book.audioUrl}"></audio>
+                    <p style="margin-top:10px; font-size:0.9rem;">🎵 استمع مباشرة</p>
+                </div>
+            `).join('');
+            document.getElementById('audioContainer').innerHTML = html;
+        }
+
+        let timeout;
+        document.getElementById('audioSearch').addEventListener('input', (e) => {
+            clearTimeout(timeout);
+            const q = e.target.value.trim();
+            timeout = setTimeout(() => searchAudiobooks(q), 600);
+        });
+
+        // بحث أولي
+        searchAudiobooks('مغامرات');
+    </script>
+</body>
+</html>
