@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>ألعاب مَسَار</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .game-card {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid var(--lime);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .game-card:hover { transform: translateY(-5px); background: var(--lime); color: #0a140a; }
+        .game-area {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            padding: 25px;
+            border: 2px solid var(--lime);
+            margin-top: 30px;
+        }
+        @media (min-width: 600px) { .games-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (min-width: 900px) { .games-grid { grid-template-columns: repeat(3,1fr); } }
+    </style>
+</head>
+<body>
+    <div class="privacy-banner" id="privacyBanner">
+        <span>🔒 تنبيه الخصوصية</span> — نحتفظ بعنوان IP مرة واحدة فقط. بالمتابعة أنت موافق.
+        <button id="acceptPrivacy">موافق</button>
+    </div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="school.png" alt="شعار المدرسة" class="school-logo">
+                <span>مَسَار</span>
+                <small>فيصل</small>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="books.html">الكتب</a></li>
+                <li><a href="audiobooks.html">المسموع</a></li>
+                <li><a href="games.html" class="active">الألعاب</a></li>
+                <li><a href="draw.html">الرسم</a></li>
+                <li><a href="map.html">الخريطة</a></li>
+            </ul>
+            <div class="toolbar">
+                <button id="toggleMode" title="تبديل السمة">🌙</button>
+                <button id="increaseFont" title="تكبير الخط">أكبر</button>
+                <button id="decreaseFont" title="تصغير الخط">أصغر</button>
+            </div>
+        </div>
+    </nav>
+
+    <section style="padding: 20px 0;">
+        <h2 style="font-size:2.2rem; margin-bottom:20px;">🎲 اختر لعبة</h2>
+        <div class="games-grid">
+            <div class="game-card" data-game="guess">
+                <span style="font-size:3rem;">🎯</span>
+                <h3>تخمين الرقم</h3>
+                <p>خمن الرقم بين 1 و 100</p>
+            </div>
+            <div class="game-card" data-game="rps">
+                <span style="font-size:3rem;">✊</span>
+                <h3>حجر ورقة مقص</h3>
+                <p>العب ضد الحاسوب</p>
+            </div>
+            <div class="game-card" data-game="memory">
+                <span style="font-size:3rem;">🧩</span>
+                <h3>الذاكرة</h3>
+                <p>طابق الأزواج</p>
+            </div>
+        </div>
+        <div id="gameArea" class="game-area"></div>
+    </section>
+
+    <footer class="footer">
+        <p>🌿 مَسَار · إبداع <strong>فيصل</strong></p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        const gameArea = document.getElementById('gameArea');
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const game = card.dataset.game;
+                if (game === 'guess') startGuessGame();
+                else if (game === 'rps') startRPSGame();
+                else if (game === 'memory') startMemoryGame();
+            });
+        });
+
+        function startGuessGame() {
+            const secret = Math.floor(Math.random() * 100) + 1;
+            let attempts = 0;
+            gameArea.innerHTML = `
+                <h3>🎯 تخمين الرقم</h3>
+                <input type="number" id="guessInput" min="1" max="100" style="width:100%; padding:12px; border-radius:30px; border:2px solid var(--lime); background:var(--card); color:var(--text);">
+                <button class="btn btn-primary" id="guessBtn" style="margin-top:15px;">خمن</button>
+                <p id="guessResult" style="margin-top:15px;"></p>
+                <button class="btn btn-outline" id="resetGuess" style="margin-top:10px;">لعبة جديدة</button>
+            `;
+            document.getElementById('guessBtn').onclick = () => {
+                const g = parseInt(document.getElementById('guessInput').value);
+                if (isNaN(g)) return;
+                attempts++;
+                const result = g === secret ? `🎉 أحسنت! الرقم ${secret} (${attempts} محاولة)` : (g > secret ? '📉 أصغر' : '📈 أكبر');
+                document.getElementById('guessResult').innerText = result;
+            };
+            document.getElementById('resetGuess').onclick = () => startGuessGame();
+        }
+
+        function startRPSGame() {
+            const choices = ['حجر', 'ورقة', 'مقص'];
+            gameArea.innerHTML = `
+                <h3>✊ حجر ورقة مقص</h3>
+                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                    ${choices.map(c => `<button class="btn btn-outline rps-choice" data-choice="${c}">${c}</button>`).join('')}
+                </div>
+                <p id="rpsResult" style="margin-top:20px;"></p>
+            `;
+            document.querySelectorAll('.rps-choice').forEach(b => {
+                b.onclick = () => {
+                    const user = b.dataset.choice;
+                    const comp = choices[Math.floor(Math.random()*3)];
+                    let res = '';
+                    if (user === comp) res = '🤝 تعادل';
+                    else if ((user==='حجر'&&comp==='مقص')||(user==='ورقة'&&comp==='حجر')||(user==='مقص'&&comp==='ورقة')) res = '✅ فزت';
+                    else res = '❌ خسرت';
+                    document.getElementById('rpsResult').innerText = `أنت: ${user} · الحاسوب: ${comp} · ${res}`;
+                };
+            });
+        }
+
+        function startMemoryGame() {
+            gameArea.innerHTML = `<h3>🧩 الذاكرة (قريباً)</h3><p>سيتم إضافة اللعبة في التحديث القادم</p>`;
+        }
+    </script>
+</body>
+</html>
