@@ -2,17 +2,31 @@ const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
     const { q } = req.query;
-    if (!q) return res.status(400).json({ error: 'Query required' });
-    // استخدام واجهة Archive.org للبحث عن مواد صوتية
-    const url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(q)}+AND+mediatype:(audio)&fl[]=identifier,title,creator,year&sort[]=downloads+desc&rows=20&page=1&output=json`;
-    const response = await fetch(url);
-    const data = await response.json();
-    const docs = data.response.docs || [];
-    const books = docs.map(doc => ({
-        id: doc.identifier,
-        title: doc.title,
-        author: doc.creator,
-        audioUrl: `https://archive.org/download/${doc.identifier}/${doc.identifier}.mp3`
-    }));
-    res.status(200).json({ books });
+    if (!q) {
+        // عرض قائمة افتراضية لكتب مسموعة شهيرة
+        return res.status(200).json({ books: getDefaultBooks() });
+    }
+
+    try {
+        const url = `https://librivox.org/api/feed/audiobooks?title=${encodeURIComponent(q)}&format=json&limit=20`;
+        const response = await fetch(url);
+        const data = await response.json();
+        const books = (data.books || []).map(book => ({
+            id: book.id,
+            title: book.title,
+            author: book.authors?.[0]?.first_name + ' ' + book.authors?.[0]?.last_name || 'غير معروف',
+            audioUrl: book.url_text_source || `https://www.archive.org/download/${book.url_librivox}/${book.url_librivox}.mp3`
+        }));
+        res.status(200).json({ books: books.length ? books : getDefaultBooks() });
+    } catch (e) {
+        res.status(200).json({ books: getDefaultBooks() });
+    }
 };
+
+function getDefaultBooks() {
+    return [
+        { title: "ألف ليلة وليلة", author: "مجهول", audioUrl: "https://ia800100.us.archive.org/29/items/1001_nights_librivox/1001_nights_01_64kb.mp3" },
+        { title: "كليلة ودمنة", author: "ابن المقفع", audioUrl: "https://ia801400.us.archive.org/25/items/kalila_wa_dimna_1408_librivox/kalilawadimna_01_ibnalmuqaffa_64kb.mp3" },
+        { title: "الأمير الصغير", author: "أنطوان دو سانت", audioUrl: "https://ia800203.us.archive.org/16/items/le_petit_prince_ar/lepetitprince_01_saintexupery_64kb.mp3" }
+    ];
+}
